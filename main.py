@@ -30,6 +30,7 @@ class Main():
         self.screen.fill((100,100,100))
         self.blit_all_tiles()
         self.screen.blit(self.player.image, self.player.rect)
+        self.blit_all_overlay()
         pygame.display.flip()
 
     def blit_all_tiles(self):
@@ -43,23 +44,12 @@ class Main():
         y_axe = self.player.rect.y // self.settings.tile_size
         x_axe = self.player.rect.x // self.settings.tile_size
         for i, layer in enumerate(self.tmxdata):
-            for tile in layer.tiles():
-                is_close_x = x_axe == tile[0] or x_axe + 1 == tile[0] or y_axe == tile[0] or y_axe + 1 == tile[0]
-                if i > 4 and tile[1] * self.settings.tile_size > self.player.rect.y and is_close_x:
-                    x_pixel = tile[0] * self.settings.tile_size
-                    y_pixel = tile[1] * self.settings.tile_size
-                    self.screen.blit(tile[2], (x_pixel, y_pixel))
-
-    def blit_all_overlay(self):
-        y_axe = self.player.rect.y // self.tile_size
-        x_axe = self.player.rect.x // self.tile_size
-        for i, layer in enumerate(self.tmxdata):
-            for tile in layer.tiles():
-                is_close_x = x_axe == tile[0] or x_axe + 1 == tile[0] or y_axe == tile[0] or y_axe + 1 == tile[0]
-                if i > 4 and tile[1] * self.settings.tile_size > self.player.rect.y and is_close_x:
-                    x_pixel = tile[0] * self.settings.tile_size + self.world_offset[0]
-                    y_pixel = tile[1] * self.settings.tile_size + self.world_offset[1]
-                    self.screen.blit(tile[2], (x_pixel, y_pixel))
+            if i > 0:
+                for tile in layer.tiles():
+                    if tile[1] * self.settings.tile_size > self.player.rect.y:
+                        x_pixel = tile[0] * self.settings.tile_size
+                        y_pixel = tile[1] * self.settings.tile_size
+                        self.screen.blit(tile[2], (x_pixel, y_pixel))
 
     def check_event(self):
         for event in pygame.event.get():

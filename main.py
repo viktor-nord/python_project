@@ -4,6 +4,7 @@ from pytmx.util_pygame import load_pygame
 
 from player import Player
 from settings import Settings
+from start_screen import StartScreen
 
 class Main():
     def __init__(self):
@@ -18,11 +19,16 @@ class Main():
         self.counter = 0
         self.game_is_running = True
         self.player = Player(self)
+        self.start_screen = StartScreen(self)
+        self.game_pause = True
 
     def run(self):
         while self.game_is_running:
             self.check_event()
-            self.player.update()
+            if self.game_pause:
+                pass
+            else:
+                self.player.update()
             self.clock.tick(60)
             self.update_screen()
 
@@ -31,6 +37,8 @@ class Main():
         self.blit_all_tiles()
         self.screen.blit(self.player.image, self.player.rect)
         self.blit_all_overlay()
+        if self.game_pause:
+            self.start_screen.blitme()
         pygame.display.flip()
 
     def blit_all_tiles(self):
@@ -61,6 +69,15 @@ class Main():
             self.player.moving_left = keys[pygame.K_LEFT]
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.handle_click()
+                
+
+    def handle_click(self):
+        for btn in self.start_screen.buttons:
+            id = btn.check_click()
+            if id == 1:
+                self.game_pause = False
             
 
 if __name__ == '__main__':

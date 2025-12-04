@@ -15,9 +15,14 @@ class Animation(Sprite):
         self.rect.x = pos[0] if pos[0] != None else self.arr[0].get_rect(center = game.screen.get_rect().center).x
         self.rect.y = pos[1] if pos[1] != None else self.arr[0].get_rect(center = game.screen.get_rect().center).y
         self.counter = 0
+        self.animation_is_done = False
 
-    # def update(self):
-    #     self.counter += 1
+    def update(self):
+        if self.counter < (self.lenght - 1) * 2:
+            self.counter += 1
+        else:
+            self.animation_is_done = True
+
 
     def get_img_arr(self, path):
         index = 1
@@ -35,5 +40,3 @@ class Animation(Sprite):
 
     def blitme(self, screen):
         screen.blit(self.arr[self.counter // 2], self.rect)
-        if self.counter < (self.lenght - 1) * 2:
-            self.counter += 1

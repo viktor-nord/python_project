@@ -13,6 +13,7 @@ class Main():
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height)
         )
+        self.screen_rect = self.screen.get_rect()
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Akavir: God of none')
         self.tmxdata = load_pygame('map/example_maptmx.tmx')
@@ -20,9 +21,10 @@ class Main():
         self.game_is_running = True
         self.game_pause = True
         self.buttons = pygame.sprite.Group()
-        # self.animations = pygame.sprite.Group()
+        self.animations = pygame.sprite.Group()
         self.player = Player(self)
         self.start_screen = StartScreen(self)
+        self.character_creation = False
 
     def run(self):
         while self.game_is_running:
@@ -31,6 +33,7 @@ class Main():
                 self.buttons.update()
             else:
                 self.player.update()
+            self.animations.update()
             self.clock.tick(60)
             self.update_screen()
 
@@ -69,6 +72,8 @@ class Main():
         for btn in self.buttons:
             id = btn.check_click()
             if id == 1:
+                self.character_creation = True
+            elif id == 2:
                 self.game_pause = False
             
 

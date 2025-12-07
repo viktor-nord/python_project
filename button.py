@@ -13,7 +13,7 @@ class Button(Sprite):
         self.image = pygame.transform.scale(img, self.wh)
         self.rect = self.image.get_rect(center = pos)
         self.text = Text(text, pos)
-    
+
     def draw_button(self):
         self.screen.blit(self.image, self.rect)
         self.screen.blit(self.text.text, self.text.rect)
@@ -37,33 +37,51 @@ class Button(Sprite):
 class CheckBox(Button):
     def __init__(self, game, id, text, pos, width):
         super().__init__(game, id, text, pos)
-        self.width = width
+        self.width = 280
+        self.height = game.settings.tile_size
+        self.rect = pygame.Rect(
+            (pos[0] - self.width / 2, pos[1] - self.height / 2),
+            (self.width, self.height)
+        )
+        baseUrl = "assets/ui_sprites/Sprites/Content/"
+        img_array = (
+            baseUrl + "4 Buttons/Sliced/5.png",
+            baseUrl + "5 Holders/22.png",
+            baseUrl + "5 Holders/12.png",
+            baseUrl + "5 Holders/13.png",
+            baseUrl + "5 Holders/14.png",
+        )
+        self.images = [pygame.image.load(url) for url in img_array]
+        
+
+        self.arrow = pygame.image.load("assets/ui_sprites/Sprites/Content/4 Buttons/Sliced/5.png")
         url = "assets/ui_sprites/Sprites/Content/5 Holders/"
         self.start = pygame.image.load(url + '9.png')
         self.middle = pygame.image.load(url + '10.png')
         self.end = pygame.image.load(url + '11.png')
         self.check_box_img = pygame.image.load(url + '22.png')
+        x = self.rect.top + self.height/2
+        y = left=self.rect.top
+        self.check_box_rect = self.check_box_img.get_rect(
+            top= self.rect.top + self.height/2, 
+            left=self.rect.top + self.height/2
+        )        
         self.start_rect = self.start.get_rect()
         self.middle_rect = self.middle.get_rect()
         self.end_rect = self.end.get_rect()
         self.end_rect.right = pos[1] + width/2
         self.margin = 10
-        self.image = self.render_image()
-    
-    def render_image(self):
-        margin = 10
-        surf = pygame.Surface(
-            (self.width - self.check_box_img.get_width() - self.margin, self.start.get_height() )
-        )
-        surf_rect = surf.get_rect()
-        surf.blit(self.check_box_img, (surf_rect.x, surf_rect.y))
-        x = surf_rect.x + self.check_box_img.get_width() + margin
-        while x < self.width:
-            surf.blit(self.middle, (x, surf_rect.y))
+
+    def draw_button(self):
+        x = self.rect.left
+        y = self.rect.top
+        self.screen.blit(self.images[1], (x + 8, y + 8))
+        self.screen.blit(self.images[2], (x + self.game.settings.tile_size, y))
+        x += self.game.settings.tile_size + self.start_rect.width
+        while x < self.rect.left + self.width - self.middle_rect.width:
+            self.screen.blit(self.images[3], (x, y))
             x += self.middle_rect.width
-        surf.blit(self.end, self.end_rect)
-        return surf
-    
-    # def draw_button(self):
+        self.screen.blit(self.images[4], self.end.get_rect(right=self.rect.right, top=self.rect.top))
+        self.screen.blit(self.text.text, self.text.rect)
 
     # update

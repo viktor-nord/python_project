@@ -29,8 +29,8 @@ class StartScreen:
         self.text_2 = Text('testing longer word, jwoefhweofhwoi', (350, 250), has_underline=True)
         self.book = Book(self)
         self.check_box = CheckBox(
-            self, "munk", "Munk", 
-            (292 + 202 + 146, 60 + 365/2), 
+            self.game, "munk", "Munk", 
+            (672, 60 + 365/2), 
             290
         )
         
@@ -60,10 +60,11 @@ class StartScreen:
             self.animation.blitme(self.game.screen)
             if self.animation.animation_is_done:
                 self.title.blitme(self.screen)
-        self.right_box.fill((200, 0,0))
-        self.right_box.set_alpha(50)
-        self.screen.blit(self.right_box, (self.screen_rect.width / 2 + 20, 60))
-        self.right_box.fill((200, 0,0))
-        self.right_box.set_alpha(50)
-        self.screen.blit(self.right_box, (202, 60))
-        self.screen.blit(self.check_box.image, self.check_box.rect)
+        # self.right_box.fill((200, 0,0))
+        # self.right_box.set_alpha(50)
+        # self.screen.blit(self.right_box, (self.screen_rect.width / 2 + 20, 60))
+        # self.right_box.fill((200, 0,0))
+        # self.right_box.set_alpha(50)
+        # self.screen.blit(self.right_box, (202, 60))
+        # self.screen.blit(self.check_box.image, self.check_box.rect)
+        self.check_box.draw_button()

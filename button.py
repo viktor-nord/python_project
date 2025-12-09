@@ -79,11 +79,14 @@ class CheckBox(Button):
         self.width = 280
         self.height = game.settings.tile_size
         self.id = id
-        self.rect = pygame.Rect(
-            (parent.x, parent.y), (parent.width, parent.height)
-        )
+        # self.rect = pygame.Rect(
+        #     (parent.x, parent.y), (parent.width, parent.height)
+        # )
         self.is_checked = False
         self.is_active = False
+        self.surf = pygame.Surface((parent.width, parent.height), pygame.SRCALPHA)
+        self.rect = self.surf.get_rect(center = parent.center)
+        self.ref = self.surf.get_rect(top = 0, left = 0)
         url = "assets/ui_sprites/Sprites/Content/"
         self.arrow = pygame.transform.flip(
             pygame.image.load(url + "4 Buttons/Sliced/5.png"), True, False
@@ -93,29 +96,32 @@ class CheckBox(Button):
         self.middle = pygame.image.load(url + '5 Holders/10.png').convert_alpha()
         self.end = pygame.image.load(url + '5 Holders/11.png').convert_alpha()
         self.arrow_rect = self.arrow.get_rect(
-            left=parent.left, centery=parent.centery,
+            left = self.ref.left, centery = self.ref.centery,
         )
-        self.check_box_rect = self.check_box_img.get_rect( 
-            left = self.arrow_rect.right, centery=parent.centery,
+        self.check_box_rect = self.check_box_img.get_rect(
+            left = self.arrow_rect.right, centery=self.ref.centery,
         )
         self.start_rect = self.start.get_rect(
-            left = self.check_box_rect.right, centery=parent.centery,
+            left = self.check_box_rect.right, centery=self.ref.centery,
         )
         self.end_rect = self.end.get_rect(
-            left=parent.right, centery=parent.centery
+            right=self.ref.right, centery=self.ref.centery
         )
-        self.surf = pygame.Surface((100,100), pygame.SRCALPHA)
+        self.surf.blit(self.arrow, self.arrow_rect)
+        self.surf.blit(self.check_box_img, self.check_box_rect)
+        self.surf.blit(self.start, self.start_rect)
+        self.blit_middle()
+        self.surf.blit(self.end, self.end_rect)
 
-    def blitme(self):
-        self.screen.blit(self.arrow, self.arrow_rect)
-        self.screen.blit(self.check_box_img, self.check_box_rect)
-        self.screen.blit(self.start, self.start_rect)
+    def blit_middle(self):
         x = self.start_rect.right
         y = self.start_rect.top
-        while x < self.parent.right:
-            self.screen.blit(self.middle, (x,y))
-            x += self.middle.get_width()
-        self.screen.blit(self.end, self.end_rect)
+        while x < self.ref.right - 16:
+            self.surf.blit(self.middle, (x,y))
+            x += self.middle.get_width()        
+
+    def blitme(self):
+        self.screen.blit(self.surf, self.rect)
 
     def check_click(self):
         pos = pygame.mouse.get_pos()

@@ -5,6 +5,7 @@ from pytmx.util_pygame import load_pygame
 from player import Player
 from settings import Settings
 from start_screen import StartScreen
+from character_creation import CharacterCreation
 
 class Main():
     def __init__(self):
@@ -24,7 +25,8 @@ class Main():
         self.animations = pygame.sprite.Group()
         self.player = Player(self)
         self.start_screen = StartScreen(self)
-        self.character_creation = False
+        self.character_creation = CharacterCreation(self)
+        self.character_creation_active = False
 
     def run(self):
         while self.game_is_running:
@@ -40,9 +42,16 @@ class Main():
     def update_screen(self):
         self.screen.fill((100,100,100))
         # self.blit_all_tiles()
-        self.screen.blit(self.player.image, self.player.rect)
         if self.game_pause:
-            self.start_screen.blitme()
+            if self.character_creation_active:
+                self.character_creation.blitme()
+            else:
+                self.start_screen.blitme()
+        else:
+            self.screen.blit(self.player.image, self.player.rect)
+        # self.buttons.draw(self.screen)
+        # for btn in self.buttons:
+        #     btn.blitme()
         pygame.display.flip()
 
     # def blit_all_tiles(self):
@@ -71,8 +80,9 @@ class Main():
     def handle_click(self):
         for btn in self.buttons:
             id = btn.check_click()
+            print(id)
             if id == 1:
-                self.character_creation = True
+                self.character_creation_active = True
             elif id == 2:
                 self.game_pause = False
             

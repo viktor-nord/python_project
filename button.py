@@ -85,6 +85,7 @@ class CheckBox(Button):
         self.is_checked = False
         self.is_active = False
         self.surf = pygame.Surface((parent.width, parent.height), pygame.SRCALPHA)
+        self.surf_active = pygame.Surface((parent.width, parent.height), pygame.SRCALPHA)
         self.rect = self.surf.get_rect(center = parent.center)
         self.ref = self.surf.get_rect(top = 0, left = 0)
         url = "assets/ui_sprites/Sprites/Content/"
@@ -107,21 +108,29 @@ class CheckBox(Button):
         self.end_rect = self.end.get_rect(
             right=self.ref.right, centery=self.ref.centery
         )
-        self.surf.blit(self.arrow, self.arrow_rect)
-        self.surf.blit(self.check_box_img, self.check_box_rect)
-        self.surf.blit(self.start, self.start_rect)
+        self.surf_active.blit(self.arrow, self.arrow_rect)
+        self.surf_active.blit(self.check_box_img, self.check_box_rect)
+        self.surf_active.blit(self.start, self.start_rect)
         self.blit_middle()
-        self.surf.blit(self.end, self.end_rect)
+        self.surf_active.blit(self.end, self.end_rect)
+
+        text_box = pygame.Rect(self.start_rect.left, self.start_rect.top, self.end_rect.right - self.start_rect.left, self.start_rect.height)
+        self.text = Text(text, text_box.center, has_underline=True)
+        self.surf.blit(self.text.text, self.text.rect)
+        self.surf_active.blit(self.text.text, self.text.rect)
 
     def blit_middle(self):
         x = self.start_rect.right
         y = self.start_rect.top
         while x < self.ref.right - 16:
-            self.surf.blit(self.middle, (x,y))
+            self.surf_active.blit(self.middle, (x,y))
             x += self.middle.get_width()        
 
     def blitme(self):
-        self.screen.blit(self.surf, self.rect)
+        if self.is_active:
+            self.screen.blit(self.surf_active, self.rect)
+        else:
+            self.screen.blit(self.surf, self.rect)
 
     def check_click(self):
         pos = pygame.mouse.get_pos()
@@ -135,7 +144,11 @@ class CheckBox(Button):
         
     def update(self):
         pos = pygame.mouse.get_pos()
-        if self.rect.collidepoint(pos):
-            self.image = pygame.transform.scale(self.img_active, self.wh)
+        if self.check_collision(self.rect, pos):
+            self.is_active = True
         else:
-            self.image = pygame.transform.scale(self.img_base, self.wh)
+            self.is_active = False
+
+
+        
+            

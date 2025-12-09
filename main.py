@@ -35,6 +35,7 @@ class Main():
             if self.game_pause:
                 # self.buttons.update()
                 self.start_screen.update()
+                self.character_creation.update()
             else:
                 self.player.update()
             self.animations.update()

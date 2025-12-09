@@ -25,6 +25,7 @@ class Main():
         self.animations = pygame.sprite.Group()
         self.player = Player(self)
         self.start_screen = StartScreen(self)
+        # self.start_screen_active = True
         self.character_creation = CharacterCreation(self)
         self.character_creation_active = False
 
@@ -32,7 +33,8 @@ class Main():
         while self.game_is_running:
             self.check_event()
             if self.game_pause:
-                self.buttons.update()
+                # self.buttons.update()
+                self.start_screen.update()
             else:
                 self.player.update()
             self.animations.update()
@@ -49,9 +51,6 @@ class Main():
                 self.start_screen.blitme()
         else:
             self.screen.blit(self.player.image, self.player.rect)
-        # self.buttons.draw(self.screen)
-        # for btn in self.buttons:
-        #     btn.blitme()
         pygame.display.flip()
 
     # def blit_all_tiles(self):
@@ -78,14 +77,24 @@ class Main():
         self.player.moving_left = keys[pygame.K_LEFT]
 
     def handle_click(self):
-        for btn in self.buttons:
-            id = btn.check_click()
-            print(id)
-            if id == 1:
-                self.character_creation_active = True
-            elif id == 2:
-                self.game_pause = False
-            
+        if self.game_pause == False:
+            return 
+        if self.character_creation_active:
+            self.character_creation.handle_click()
+        #     for btn in self.character_creation.buttons.list:
+        #         id = btn.check_click()
+        #         print(id)
+        #         if id == 1:
+        #             self.character_creation_active = True
+        #         elif id == 2:
+        #             self.game_pause = False
+        else:
+            for btn in self.start_screen.buttons:
+                id = btn.check_click()
+                if id == 1:
+                    self.character_creation_active = True
+                elif id == 2:
+                    self.game_pause = False
 
 if __name__ == '__main__':
     game = Main()

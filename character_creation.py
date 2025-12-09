@@ -12,8 +12,9 @@ class CharacterCreation:
         self.bg_rect = self.bg.get_rect(center = game.screen_rect.center)
         self.book = Book(game)
         self.right_page = pygame.Rect((534, 90),(270, 358))
-        self.check_box_list = CheckBoxList(
-            self.game, self.right_page,
+        self.buttons = CheckBoxList(
+            self.game, 
+            self.right_page,
             [
                 {"id":"munk", "text":"Munk"},
                 {"id":"cleric", "text":"Cleric"},
@@ -24,4 +25,7 @@ class CharacterCreation:
     def blitme(self):
         self.screen.blit(self.bg, self.bg_rect)
         self.book.blitme(self.screen)
-        self.check_box_list.draw_list()
+        self.buttons.draw_list()
+    
+    def handle_click(self):
+        self.buttons.check_click()

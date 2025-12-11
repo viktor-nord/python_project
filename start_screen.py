@@ -17,7 +17,7 @@ class StartScreen:
         )
         self.title = Title(
             'Akavir: God of None', 
-            self.animation.rect.center, 
+            self.animation.rect, 
             has_underline=True
         )
         self.fade = pygame.Surface(
@@ -26,6 +26,7 @@ class StartScreen:
         self.fade.fill((0, 0, 0))
         self.fade.set_alpha(160)
         self.game.animations.add(self.animation)
+        
 
     def generate_buttons(self):
         buttons = ['New Game', 'Load Game', 'Options']

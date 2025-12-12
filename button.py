@@ -100,6 +100,7 @@ class CheckBox(Button):
         self.check_img_rect = self.check_img.get_rect(x = self.rect.x + 16, centery = self.rect.centery - 1)
         text_container = self.container.copy()
         text_container.x += 8
+        text_container.y += 6
         self.text = Text(text, text_container, has_underline=True, centered=False)
         self.fill_surf()
         self.fill_active_surf(url)

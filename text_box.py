@@ -1,30 +1,29 @@
+from email.mime import image
 from turtle import width
 import pygame as py
 from font import Text
 
 class TextBox:
-    def __init__(self, game, text, parent):
+    def __init__(self, game, text, parent, title=""):
         self.game = game
         self.parent = parent
-        self.text = Text(text, parent, centered=False)
-        self.image = py.Surface((parent.width - 32, 128), py.SRCALPHA)
-        # self.image = py.Surface((parent.width, self.text.rect.height), py.SRCALPHA)
-        self.rect = self.image.get_rect(x=parent.x + 16, y=parent.y)
+        self.title = title
+        self.width = parent.width - 32
         self.src = py.image.load("assets/ui_sprites/SpriteSheet/Folding & Cutout Paper UI SpriteSheet.png")
         self.size = (32,32)
+        self.text_container = py.Rect((4, 4), (parent.width - 32 - 8, 10))
+        self.text = Text(text, self.text_container, centered=False)
+        self.image = py.Surface((self.width, self.text.rect.height), py.SRCALPHA)
+        self.rect = self.image.get_rect(x=parent.x + 16, y=parent.y)
         self.images = self.get_box()
         self.render_box()
-        
-        # self.images = self.get_small_container()
-        # self.top_left = py.Surface(self.size, py.SRCALPHA)
-        # self.top_left.blit(self.top_left_img, (-2790,-3654))
+        self.image.blit(self.text.image, self.text.rect)
 
     def render_box(self):
-        h = 128
+        h = self.text.rect.height
         # height = self.rect.height // 16
         height = h // 16
-        width = self.rect.width // 16
-        print(self.rect.width)
+        width = self.width // 16
         for y in range(0, height):
             for x in range(0, width):
                 # print(f"y: {y}, x: {x}")
@@ -114,6 +113,7 @@ class TextBox:
 
     def blitme(self):
         self.game.screen.blit(self.image, self.rect)
+        # py.draw.rect(self.game.screen, "red", self.image.get_rect(y = self.rect.y, x = self.rect.x + 4 , width = self.image.get_width() - 8, height=50))
         # self.game.screen.blit(self.images["top_left"], (0,0))
         # self.game.screen.blit(self.images["top"], (16,0))
         # self.game.screen.blit(self.images["top_right"], (32,0))
@@ -123,3 +123,4 @@ class TextBox:
         # self.game.screen.blit(self.images["bottom"], (16,32))
         # self.game.screen.blit(self.images["bottom_right"], (32,32))
         # self.game.screen.blit(self.images["blank"], (16,16))
+        

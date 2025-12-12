@@ -33,7 +33,7 @@ class CharacterCreation:
         self.text_box_container = self.left_page.copy()
         self.text_box_container.height = 100
         self.text_box_container.y += 50
-        self.text_box = TextBox(self.game, "owehf ehofhw ewhfowehfowe", self.text_box_container)
+        self.text_box = TextBox(self.game, "this is a test text for the purpus of checking the lenght and height of the text box. now i m making the text box bigger", self.text_box_container)
 
     def update(self):
         self.buttons.update()

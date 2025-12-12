@@ -33,17 +33,13 @@ class Button(Sprite):
             self.screen.blit(self.surf_active, self.rect)
         else:
             self.screen.blit(self.surf, self.rect)
-        # self.image.blit(self.text.text, self.text.rect)
-        # self.screen.blit(self.image, self.rect)
 
     def update(self):
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
             self.is_hover = True
-            # self.image = pygame.transform.scale(self.img_active, self.wh)
         else:
             self.is_hover = False
-            # self.image = pygame.transform.scale(self.img_base, self.wh)
 
     def check_click(self):
         pos = pygame.mouse.get_pos()
@@ -60,7 +56,6 @@ class CheckBoxList():
     def __init__(self, game, parent, list):
         self.game = game
         self.parent = parent
-        # self.buttons = pygame.sprite.Group()
         self.list = self.get_list(list)
 
     def get_list(self, list):
@@ -80,11 +75,6 @@ class CheckBoxList():
         for btn in self.list:
             id = btn.check_click()
             print(id)
-            # if id == 1:
-            #     self.character_creation_active = True
-            # elif id == 2:
-            #     self.game_pause = False
-
 
     def draw_list(self):
         for button in self.list:
@@ -99,25 +89,15 @@ class CheckBox(Button):
         self.surf_active = pygame.Surface((parent.width, parent.height), pygame.SRCALPHA)
         self.rect = self.surf.get_rect(center = parent.center)
         url = "assets/ui_sprites/Sprites/Content/"
-        self.arrow = pygame.transform.flip(
-            pygame.image.load(url + "4 Buttons/Sliced/5.png"), True, False
-        ).convert_alpha()
+        arrow_img = pygame.image.load(url + "4 Buttons/Sliced/5.png").convert_alpha()
+        self.arrow = pygame.transform.flip(arrow_img, True, False)
         self.check_box_img = pygame.image.load(url + '5 Holders/22.png').convert_alpha()
         self.check_img = pygame.image.load(url + "2 Icons/5.png").convert_alpha()
         space = self.arrow.get_width() + self.check_box_img.get_width()
-        self.container = self.surf.get_rect(
-            left = space, width = self.rect.width - space
-        )
-        self.arrow_rect = self.arrow.get_rect(
-            left = self.rect.left, centery = self.rect.centery,
-        )
-        self.check_box_rect = self.check_box_img.get_rect(
-            right = self.container.left, centery=self.container.centery,
-        )
-        self.check_img_rect = self.check_img.get_rect(
-            x = self.rect.x + 16,
-            centery = self.rect.centery - 1
-        )
+        self.container = self.surf.get_rect(left=space, width=self.rect.width-space)
+        self.arrow_rect = self.arrow.get_rect(left=self.rect.left, centery=self.rect.centery)
+        self.check_box_rect = self.check_box_img.get_rect(right=self.container.left, centery=self.container.centery)
+        self.check_img_rect = self.check_img.get_rect(x = self.rect.x + 16, centery = self.rect.centery - 1)
         text_container = self.container.copy()
         text_container.x += 8
         self.text = Text(text, text_container, has_underline=True, centered=False)
@@ -152,22 +132,3 @@ class CheckBox(Button):
             self.screen.blit(self.check_img, self.check_img_rect)
         if self.is_selected:
             self.screen.blit(self.arrow, self.arrow_rect)
-        # pygame.draw.rect(self.screen, "red", self.rect)
-
-    # def check_click(self):
-    #     pos = pygame.mouse.get_pos()
-    #     if self.rect.collidepoint(pos) and self.game.game_pause:
-
-    # def check_collision(self, rect, pos):
-    #     return rect.left <= pos[0] and rect.top <= pos[1] and rect.right >= pos[0] and rect.bottom >=pos[1]
-        
-    # def update(self):
-    #     pos = pygame.mouse.get_pos()
-    #     if self.check_collision(self.rect, pos):
-    #         self.is_hover = True
-    #     else:
-    #         self.is_hover = False
-
-
-        
-            

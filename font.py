@@ -35,7 +35,7 @@ class Text:
                 screen.blit(self.under_line_img, ul_pos)
 
 class Title(Text):
-    def __init__(self, text, parent, size=32, has_underline=False):
-        super().__init__(text, parent, size, has_underline)
+    def __init__(self, text, parent, size=42, has_underline=False):
+        super().__init__(text, parent, size, has_underline, centered=True)
         self.font = pygame.font.Font('assets/font/Blackwood Castle.ttf', size)
         self.text = self.font.render(text, True, self.text_color)

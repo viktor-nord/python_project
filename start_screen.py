@@ -17,7 +17,8 @@ class StartScreen:
         )
         self.title = Title(
             'Akavir: God of None', 
-            self.animation.rect, 
+            self.animation.rect,
+            size=32,
             has_underline=True
         )
         self.fade = pygame.Surface(
